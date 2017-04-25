@@ -1,3 +1,5 @@
+package histogram;
+
 /**
  * Created by Dennis on 24.04.2017.
  */
