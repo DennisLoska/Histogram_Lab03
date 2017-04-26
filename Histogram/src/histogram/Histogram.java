@@ -7,9 +7,11 @@ import java.util.HashMap;
 
 public class Histogram {
 	
+	// fields
 	private File file;
 	private HashMap<Character, Integer> frequencyTable;	//Eine Tabelle der Buchstaben und ihrer Häufigkeit
 	
+	// constructor
 	public Histogram(String fileName){
 		file = new File(fileName);
 		frequencyTable = new HashMap<Character, Integer>();
@@ -22,29 +24,28 @@ public class Histogram {
 	}
 	
 	// Initialisierung der Häufigkeitstabelle
-	// der Ausdruck "(char) i" liefert den character and der Stelle i der ascii Tabelle
+	// der Ausdruck "(char) i" liefert den character an der Stelle i der ascii Tabelle
 	private void initTable(){
 		for(int i=65; i<91; i++){
 			frequencyTable.put((char) i, 0);
 		}
 	}
 	
-	// main Methode, erstellt ein Histogramm und führt die start() aus 
+	// main Methode, erstellt ein Histogramm und führt die read() aus 
 	public static void main(String[] args){
 		Histogram histogram = new Histogram("ambra.txt");
 		histogram.read();
 	}
 	
-	/*// start() als Zwichenschritt, startet die read(), noch erweiterbar (prints, mkfile etc)
+	/* die file wird in den filreader gegeben,
+	 * jeder char wird eingelesen, wenn der char im ausgewählten bereich ist, 
+	 * dann wird die zahl wieder zum char gemacht, als actualCharacter der save() übergeben
+	*/
 	private void read(){
-		read();
-	}*/
-	
-	private void read(){
-		FileReader fileReader = null;
-			try {
-				fileReader = new FileReader(file);
-				while(fileReader.ready()){
+		FileReader fileReader = null;		// der fileReader muss außerhalb des try/catch blocks initialisiert werden
+			try {							// gab sonst probleme
+				fileReader = new FileReader(file);	
+				while(fileReader.ready()){	// 
 					int asciiValue = fileReader.read();
 					if((asciiValue>96 && asciiValue<123) || asciiValue>64 && asciiValue<91){
 						if(asciiValue>96 && asciiValue<123){
@@ -68,8 +69,12 @@ public class Histogram {
 		System.out.println(frequencyTable);
 	}
 	
+	/* die save() nimmt den actualCharacter und wandelt ihn in ein Character Object des wrappers (notwendig für hashmap)
+	 * der workaround zur hashmap war notwendig, weil es probleme gab beim updaten der key/value pairs der HM
+	 */
 	private void save(char actualCharacter){
 		Character c = new Character(actualCharacter);	
+		// ab hier workaround zum updaten der hashmap
 		Integer value = frequencyTable.get(c);
 		frequencyTable.remove(actualCharacter);
 		frequencyTable.put(actualCharacter, value.intValue()+1); // das normale ++inkrement hat hier nicht funktioniert
