@@ -12,8 +12,8 @@ public class Histogram {
 	// fields
 	private File file;
 	private HashMap<Character, Integer> frequencyTable;	//die Tabelle der Buchstaben und ihrer Häufigkeit
-	FileWriter writeOut = null;
 	PrintWriter printOut = null;
+	FileWriter writeOut = null;
 	
 	// constructor
 	public Histogram(String fileName){
@@ -42,15 +42,16 @@ public class Histogram {
 	}
 	
 	private void start(){
-		read();
+		readFromFile();
 		writeStringToFile();
+		writeIntToFile();
 	}
 	
 	/* die file wird in den fileReader gegeben,
 	 * jeder char wird eingelesen, wenn der char im ausgewählten bereich ist, 
 	 * dann wird die zahl wieder zum char gemacht -> als actualCharacter der save() übergeben
 	*/
-	private void read(){
+	private void readFromFile(){
 		FileReader fileReader = null;		// der fileReader muss außerhalb des try/catch blocks initialisiert werden
 			try {							// gab sonst probleme
 				fileReader = new FileReader(file);	
@@ -60,8 +61,8 @@ public class Histogram {
 						if(asciiValue>96 && asciiValue<123){
 							asciiValue = asciiValue-32;
 						}
-					char actualCharacter = (char)asciiValue;
-					save(actualCharacter);			
+						char actualCharacter = (char)asciiValue;
+						save(actualCharacter);			
 					}
 				}
 			} catch (IOException e) {
@@ -91,12 +92,22 @@ public class Histogram {
 	
 	private void writeStringToFile(){
 		try { 
-			printOut = new PrintWriter("output.txt");
-			printOut.write("Test");
-			printOut.close();
-			
+			printOut = new PrintWriter("stringOutput.txt");
+			printOut.write("Test"); //starts the OutputStream 
+			printOut.close();		//closes the -     "    - and is necessary to complete the writing process			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
+	}
+	
+	private void writeIntToFile(){
+		try {
+			writeOut = new FileWriter("intOutPut.txt");
+			writeOut.write("1234");
+			writeOut.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
