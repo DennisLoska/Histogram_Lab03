@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 
 public class Histogram {
@@ -11,7 +12,8 @@ public class Histogram {
 	// fields
 	private File file;
 	private HashMap<Character, Integer> frequencyTable;	//die Tabelle der Buchstaben und ihrer Häufigkeit
-	FileWriter out = null;
+	FileWriter writeOut = null;
+	PrintWriter printOut = null;
 	
 	// constructor
 	public Histogram(String fileName){
@@ -36,7 +38,12 @@ public class Histogram {
 	// main Methode, erstellt ein Histogramm und führt die read() aus 
 	public static void main(String[] args){
 		Histogram histogram = new Histogram("ambra.txt");
-		histogram.read();
+		histogram.start();
+	}
+	
+	private void start(){
+		read();
+		writeStringToFile();
 	}
 	
 	/* die file wird in den fileReader gegeben,
@@ -82,14 +89,14 @@ public class Histogram {
 		frequencyTable.put(actualCharacter, value.intValue()+1); // das normale ++inkrement hat hier nicht funktioniert
 	}
 	
-	private void writeStringToFile(String input){
+	private void writeStringToFile(){
 		try { 
-			out = new FileWriter("output.txt");
-			out.write(input);
+			printOut = new PrintWriter("output.txt");
+			printOut.write("Test");
+			printOut.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
-		
+		}		
 	}
 }
