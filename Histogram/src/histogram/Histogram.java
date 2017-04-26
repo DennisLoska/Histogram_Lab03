@@ -32,13 +32,13 @@ public class Histogram {
 	// main Methode, erstellt ein Histogramm und führt die start() aus 
 	public static void main(String[] args){
 		Histogram histogram = new Histogram("ambra.txt");
-		histogram.start();
+		histogram.read();
 	}
 	
-	// start() als Zwichenschritt, startet die read(), noch erweiterbar (prints, mkfile etc)
-	private void start(){
+	/*// start() als Zwichenschritt, startet die read(), noch erweiterbar (prints, mkfile etc)
+	private void read(){
 		read();
-	}
+	}*/
 	
 	private void read(){
 		FileReader fileReader = null;
