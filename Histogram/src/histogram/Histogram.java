@@ -2,6 +2,7 @@ package histogram;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -9,7 +10,8 @@ public class Histogram {
 	
 	// fields
 	private File file;
-	private HashMap<Character, Integer> frequencyTable;	//Eine Tabelle der Buchstaben und ihrer Häufigkeit
+	private HashMap<Character, Integer> frequencyTable;	//die Tabelle der Buchstaben und ihrer Häufigkeit
+	FileWriter out = null;
 	
 	// constructor
 	public Histogram(String fileName){
@@ -18,7 +20,7 @@ public class Histogram {
 		initTable();
 	}
 
-	//eine  getterMethod für die HashMap -> wird später vom Unit Test benötigt
+	//eine getterMethod für die HashMap -> wird später vom Unit Test benötigt
 	public HashMap<Character, Integer> getFrequencyTable(){
 		return frequencyTable;
 	}
@@ -37,9 +39,9 @@ public class Histogram {
 		histogram.read();
 	}
 	
-	/* die file wird in den filreader gegeben,
+	/* die file wird in den fileReader gegeben,
 	 * jeder char wird eingelesen, wenn der char im ausgewählten bereich ist, 
-	 * dann wird die zahl wieder zum char gemacht, als actualCharacter der save() übergeben
+	 * dann wird die zahl wieder zum char gemacht -> als actualCharacter der save() übergeben
 	*/
 	private void read(){
 		FileReader fileReader = null;		// der fileReader muss außerhalb des try/catch blocks initialisiert werden
@@ -78,5 +80,16 @@ public class Histogram {
 		Integer value = frequencyTable.get(c);
 		frequencyTable.remove(actualCharacter);
 		frequencyTable.put(actualCharacter, value.intValue()+1); // das normale ++inkrement hat hier nicht funktioniert
+	}
+	
+	private void writeStringToFile(String input){
+		try { 
+			out = new FileWriter("output.txt");
+			out.write(input);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 }
