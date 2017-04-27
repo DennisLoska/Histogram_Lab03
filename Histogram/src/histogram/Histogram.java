@@ -50,14 +50,17 @@ public class Histogram {
 		writeIntegerToFile();
 		writeIntToFile();
 		createFile();
+		System.out.println(frequencyTable + "\n");
+		String f = getFrequencyList(frequencyTable);
+		System.out.println(f);
+		createFrequencyFile(f);
 	}
 
 	// reads all characters from file that are in a-z
 	// prints out the frequencyTable and calls the createFrequencyFile()
 	private void readFromFile() {
-		FileReader fileReader = null; // der fileReader muss außerhalb des
-										// try/catch blocks initialisiert werden
-		try { // gab sonst probleme
+		FileReader fileReader = null;
+		try {
 			fileReader = new FileReader(file);
 			while (fileReader.ready()) { //
 				int asciiValue = fileReader.read();
@@ -80,10 +83,6 @@ public class Histogram {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(frequencyTable + "\n");
-		String f = getFrequencyList(frequencyTable);
-		System.out.println(f);
-		createFrequencyFile(f);
 	}
 
 	private void save(char actualCharacter) {
@@ -99,6 +98,8 @@ public class Histogram {
 																	// funktioniert
 	}
 
+	// returns a String that contains the frequencyTable in Character - value
+	// pairs
 	private String getFrequencyList(HashMap<Character, Integer> frequencyTable) {
 		String frequencyList = "";
 		Iterator it = frequencyTable.entrySet().iterator();
@@ -110,18 +111,19 @@ public class Histogram {
 		return frequencyList;
 	}
 
+	// creates a new file that contains the String it is given
 	private void createFrequencyFile(String frequencyList) {
-		try { frequencyOut = new PrintWriter("frequencyOutput.txt");
-		frequencyOut.write(frequencyList);
-		frequencyOut.close();
+		try {
+			frequencyOut = new PrintWriter("frequencyOutput.txt");
+			frequencyOut.write(frequencyList);
+			frequencyOut.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	
 	// Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle,
-	// createFile
+	// Methoden für Aufgbe 2
 	private void writeStringToFile() {
 		try {
 			printOut = new PrintWriter("stringOutput.txt");
