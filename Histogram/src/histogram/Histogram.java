@@ -26,19 +26,19 @@ public class Histogram {
 		initTable();
 	}
 
-	// eine getterMethod für die HashMap -> wird später vom Unit Test benötigt
+	// a getter method for the HashMap, will be needed for JUnit tests
 	public HashMap<Character, Integer> getFrequencyTable() {
 		return frequencyTable;
 	}
 
-	// Initialisierung der Häufigkeitstabelle
+	// initialising the frequencyTable with the chars a-z and value 0
 	private void initTable() {
 		for (int i = 65; i < 91; i++) {
 			frequencyTable.put((char) i, 0);
 		}
 	}
 
-	// main Methode, erstellt ein Histogramm und führt die read() aus
+	// the main method creates a Histogram and runs start()
 	public static void main(String[] args) {
 		Histogram histogram = new Histogram("ambra.txt");
 		histogram.start();
@@ -55,7 +55,7 @@ public class Histogram {
 		System.out.println(f);
 		createFrequencyFile(f);
 	}
-
+	
 	// reads all characters from file that are in a-z
 	// prints out the frequencyTable and calls the createFrequencyFile()
 	private void readFromFile() {
@@ -123,7 +123,8 @@ public class Histogram {
 	}
 
 	// Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle,
-	// Methoden für Aufgbe 2
+	
+	// methods for assignment 2
 	private void writeStringToFile() {
 		try {
 			printOut = new PrintWriter("stringOutput.txt");
