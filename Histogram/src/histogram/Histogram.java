@@ -14,6 +14,7 @@ public class Histogram {
 	private HashMap<Character, Integer> frequencyTable;	//die Tabelle der Buchstaben und ihrer Häufigkeit
 	PrintWriter printOut = null;
 	FileWriter writeOut = null;
+	FileWriter intOut = null;
 	
 	// constructor
 	public Histogram(String fileName){
@@ -45,6 +46,8 @@ public class Histogram {
 		readFromFile();
 		writeStringToFile();
 		writeIntegerToFile();
+		writeIntToFile();
+		createFile();
 	}
 	
 	/* die file wird in den fileReader gegeben,
@@ -90,11 +93,7 @@ public class Histogram {
 		frequencyTable.put(actualCharacter, value.intValue()+1); // das normale ++inkrement hat hier nicht funktioniert
 	}
 	
-	// Methoden für Aufgabe 2
-	// write a String to a file
-	// write an Integer to a file
-	// write an int to a file
-	
+	// Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle, createFile
 	private void writeStringToFile(){
 		try { 
 			printOut = new PrintWriter("stringOutput.txt");
@@ -108,12 +107,31 @@ public class Histogram {
 	private void writeIntegerToFile(){
 		try {
 			Integer number = new Integer(1234);
-			writeOut = new FileWriter("intOutput.txt");
+			writeOut = new FileWriter("IntegerOutput.txt");
 			writeOut.write(number.toString());
 			writeOut.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	private void writeIntToFile(){
+		try {
+			int i = 4321;
+			intOut = new FileWriter("intOutput.txt");
+			intOut.write(String.valueOf(i));
+			intOut.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void createFile(){
+		try {
+			File file = new File("createFile.txt");
+			file.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
