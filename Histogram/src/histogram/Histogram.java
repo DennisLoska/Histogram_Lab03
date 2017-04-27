@@ -89,7 +89,6 @@ public class Histogram {
 		Character c = new Character(actualCharacter);	
 		// ab hier workaround zum updaten der hashmap
 		Integer value = frequencyTable.get(c);
-		frequencyTable.remove(actualCharacter);
 		frequencyTable.put(actualCharacter, value.intValue()+1); // das normale ++inkrement hat hier nicht funktioniert
 	}
 	
