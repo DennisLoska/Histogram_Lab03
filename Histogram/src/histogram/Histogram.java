@@ -1,7 +1,6 @@
 package histogram;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,11 +15,7 @@ public class Histogram {
     // fields
     private File file;
     private HashMap<Character, Integer> frequencyTable;
-    PrintWriter printOut = null;
-    PrintWriter frequencyOut = null;
-    FileWriter writeOut = null;
-    FileWriter intOut = null;
-    StringBufferInputStream in = null;
+    private StringBufferInputStream in;
 
     // constructor
     public Histogram(String fileName) {
@@ -29,7 +24,7 @@ public class Histogram {
         initTable();
     }
 
-    // constructor #2, need for unit tests
+    // constructor #2, needed for unit tests
     public Histogram() {
         frequencyTable = new HashMap<Character, Integer>();
         initTable();
@@ -63,13 +58,13 @@ public class Histogram {
       prints out the frequencyTable and calls the createFrequencyFile()
     */
     private void readFromFile() throws IOException {
-        FileReader fileReader = null;
+        FileReader fileReader;
         fileReader = new FileReader(file);
         prepareFrequencySave(fileReader);
         fileReader.close();
     }
 
-    public void prepareFrequencySave(FileReader fileReader) throws IOException {
+    private void prepareFrequencySave(FileReader fileReader) throws IOException {
         while (fileReader.ready()) {
             int asciiValue = fileReader.read();
             saveAsNewASCII(asciiValue);
@@ -84,7 +79,7 @@ public class Histogram {
         }
     }
 
-    public void saveAsNewASCII(int asciiValue) {
+    private void saveAsNewASCII(int asciiValue) {
         if ((asciiValue > 96 && asciiValue < 123) || asciiValue > 64 && asciiValue < 91) {
             if (asciiValue > 96 && asciiValue < 123)
                 asciiValue -= 32;
@@ -94,10 +89,10 @@ public class Histogram {
     }
 
     private void save(char actualCharacter) {
-        Character c = new Character(actualCharacter);
+        Character c = actualCharacter;
         // ab hier workaround zum updaten der hashmap
         Integer value = frequencyTable.get(c);
-        frequencyTable.put(actualCharacter, value.intValue() + 1);
+        frequencyTable.put(actualCharacter, value + 1);
         //das normale ++inkrement hat hier nicht funktioniert
     }
 
@@ -115,7 +110,7 @@ public class Histogram {
 
     // creates a new file that contains the String it is given
     private void createFrequencyFile(String frequencyList) throws IOException {
-        frequencyOut = new PrintWriter("frequencyOutput.txt");
+        PrintWriter frequencyOut = new PrintWriter("frequencyOutput.txt");
         frequencyOut.write(frequencyList);
         frequencyOut.close();
     }
@@ -125,21 +120,21 @@ public class Histogram {
       methods for assignment 2
      */
     private void writeStringToFile() throws IOException {
-        printOut = new PrintWriter("stringOutput.txt");
+        PrintWriter printOut = new PrintWriter("stringOutput.txt");
         printOut.write("Test"); // starts the OutputStream
         printOut.close(); // closes the - " - and is necessary to complete the writing process
     }
 
     private void writeIntegerToFile() throws IOException {
-        Integer number = new Integer(1234);
-        writeOut = new FileWriter("IntegerOutput.txt");
+        Integer number = 1234;
+        FileWriter writeOut = new FileWriter("IntegerOutput.txt");
         writeOut.write(number.toString());
         writeOut.close();
     }
 
     private void writeIntToFile() throws IOException {
         int i = 4321;
-        intOut = new FileWriter("intOutput.txt");
+        FileWriter intOut = new FileWriter("intOutput.txt");
         intOut.write(String.valueOf(i));
         intOut.close();
     }
