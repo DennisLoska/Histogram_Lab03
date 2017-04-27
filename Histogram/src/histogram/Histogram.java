@@ -99,6 +99,7 @@ public class Histogram {
         Character c = actualCharacter;
         // ab hier workaround zum updaten der hashmap
         Integer value = frequencyTable.get(c);
+        // counting the amount of used characters in the frequencyTable:
         frequencyTable.put(actualCharacter, value + 1);
         //das normale ++inkrement hat hier nicht funktioniert
     }
@@ -106,6 +107,7 @@ public class Histogram {
     // returns a String that contains the frequencyTable in Character - value pairs
     private String getFrequencyList(HashMap<Character, Integer> frequencyTable) {
         String frequencyList = "";
+        //TODO Erklärung dieser Syntax
         Iterator it = frequencyTable.entrySet().iterator();
         while (it.hasNext()) {
             HashMap.Entry pair = (HashMap.Entry) it.next();
