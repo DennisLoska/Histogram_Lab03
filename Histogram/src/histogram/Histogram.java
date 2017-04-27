@@ -35,9 +35,10 @@ public class Histogram {
         initTable();
     }
 
-    // a getter method for the HashMap, will be needed for JUnit tests
-    public HashMap<Character, Integer> getFrequencyTable() {
-        return frequencyTable;
+    // the main method creates a Histogram and runs start()
+    public static void main(String[] args) throws IOException {
+        Histogram histogram = new Histogram("ambra.txt");
+        histogram.start();
     }
 
     // initialising the frequencyTable with the chars a-z and value 0
@@ -45,12 +46,6 @@ public class Histogram {
         for (int i = 65; i < 91; i++) {
             frequencyTable.put((char) i, 0);
         }
-    }
-
-    // the main method creates a Histogram and runs start()
-    public static void main(String[] args) throws IOException {
-        Histogram histogram = new Histogram("ambra.txt");
-        histogram.start();
     }
 
     private void start() throws IOException {
@@ -77,13 +72,7 @@ public class Histogram {
     public void prepareFrequencySave(FileReader fileReader) throws IOException {
         while (fileReader.ready()) {
             int asciiValue = fileReader.read();
-            if ((asciiValue > 96 && asciiValue < 123) || asciiValue > 64 && asciiValue < 91) {
-                if (asciiValue > 96 && asciiValue < 123) {
-                    asciiValue = asciiValue - 32;
-                }
-                char actualCharacter = (char) asciiValue;
-                save(actualCharacter);
-            }
+            saveAsNewASCII(asciiValue);
         }
     }
 
@@ -91,13 +80,16 @@ public class Histogram {
         StringBufferInputStream in = new StringBufferInputStream(input);
         for (int i = 1; i < in.available(); i++) {
             int asciiValue = in.read();
-            if ((asciiValue > 96 && asciiValue < 123) || asciiValue > 64 && asciiValue < 91) {
-                if (asciiValue > 96 && asciiValue < 123) {
-                    asciiValue = asciiValue - 32;
-                }
-                char actualCharacter = (char) asciiValue;
-                save(actualCharacter);
-            }
+            saveAsNewASCII(asciiValue);
+        }
+    }
+
+    public void saveAsNewASCII(int asciiValue) {
+        if ((asciiValue > 96 && asciiValue < 123) || asciiValue > 64 && asciiValue < 91) {
+            if (asciiValue > 96 && asciiValue < 123)
+                asciiValue -= 32;
+            char actualCharacter = (char) asciiValue;
+            save(actualCharacter);
         }
     }
 
@@ -132,12 +124,10 @@ public class Histogram {
       Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle,
       methods for assignment 2
      */
-
     private void writeStringToFile() throws IOException {
         printOut = new PrintWriter("stringOutput.txt");
         printOut.write("Test"); // starts the OutputStream
-        printOut.close(); // closes the - " - and is necessary to complete
-        // the writing process
+        printOut.close(); // closes the - " - and is necessary to complete the writing process
     }
 
     private void writeIntegerToFile() throws IOException {
@@ -164,5 +154,11 @@ public class Histogram {
         String f = getFrequencyList(frequencyTable);
         System.out.println(f);
     }
+
+    // a getter method for the HashMap, will be needed for JUnit tests
+    public HashMap<Character, Integer> getFrequencyTable() {
+        return frequencyTable;
+    }
+
 }
 
