@@ -9,15 +9,13 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 
-
 public class Histogram {
 
 	// fields
 	private File file;
-	private HashMap<Character, Integer> frequencyTable; // die Tabelle der
-														// Buchstaben und ihrer
-														// Häufigkeit
+	private HashMap<Character, Integer> frequencyTable;
 	PrintWriter printOut = null;
+	PrintWriter frequencyOut = null;
 	FileWriter writeOut = null;
 	FileWriter intOut = null;
 
@@ -34,8 +32,6 @@ public class Histogram {
 	}
 
 	// Initialisierung der Häufigkeitstabelle
-	// der Ausdruck "(char) i" liefert den character an der Stelle i der ascii
-	// Tabelle
 	private void initTable() {
 		for (int i = 65; i < 91; i++) {
 			frequencyTable.put((char) i, 0);
@@ -55,11 +51,9 @@ public class Histogram {
 		writeIntToFile();
 		createFile();
 	}
-	/*
-	 * die file wird in den fileReader gegeben, jeder char wird eingelesen, wenn
-	 * der char im ausgewählten bereich ist, dann wird die zahl wieder zum char
-	 * gemacht -> als actualCharacter der save() übergeben
-	 */
+
+	// reads all characters from file that are in a-z
+	// prints out the frequencyTable and calls the createFrequencyFile()
 	private void readFromFile() {
 		FileReader fileReader = null; // der fileReader muss außerhalb des
 										// try/catch blocks initialisiert werden
@@ -87,26 +81,45 @@ public class Histogram {
 			e.printStackTrace();
 		}
 		System.out.println(frequencyTable + "\n");
-		writeFrequency(frequencyTable);
+		String f = getFrequencyList(frequencyTable);
+		System.out.println(f);
+		createFrequencyFile(f);
 	}
-	
-	private void save(char actualCharacter){
 
-		Character c = new Character(actualCharacter);	
+	private void save(char actualCharacter) {
+
+		Character c = new Character(actualCharacter);
 		// ab hier workaround zum updaten der hashmap
 		Integer value = frequencyTable.get(c);
-		frequencyTable.put(actualCharacter, value.intValue()+1); // das normale ++inkrement hat hier nicht funktioniert
+		frequencyTable.put(actualCharacter, value.intValue() + 1); // das
+																	// normale
+																	// ++inkrement
+																	// hat hier
+																	// nicht
+																	// funktioniert
 	}
-	
-	private void writeFrequency(HashMap<Character, Integer> frequencyTable){
+
+	private String getFrequencyList(HashMap<Character, Integer> frequencyTable) {
+		String frequencyList = "";
 		Iterator it = frequencyTable.entrySet().iterator();
-		while(it.hasNext()){
-			HashMap.Entry pair = (HashMap.Entry)it.next();
-			System.out.println(pair.getKey() + " - " + pair.getValue() + "\n");
+		while (it.hasNext()) {
+			HashMap.Entry pair = (HashMap.Entry) it.next();
+			frequencyList += (pair.getKey() + " - " + pair.getValue() + "\n");
 			it.remove();
+		}
+		return frequencyList;
+	}
+
+	private void createFrequencyFile(String frequencyList) {
+		try { frequencyOut = new PrintWriter("frequencyOutput.txt");
+		frequencyOut.write(frequencyList);
+		frequencyOut.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
+	
 	// Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle,
 	// createFile
 	private void writeStringToFile() {
