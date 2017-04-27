@@ -36,7 +36,7 @@ public class Histogram {
         histogram.start();
     }
 
-    // initialising the frequencyTable with the chars a-z and value 0
+    // initialising the frequencyTable with the chars A-Z and value 0 meaning 0 occurances
     private void initTable() {
         for (int i = 65; i < 91; i++) {
             frequencyTable.put((char) i, 0);
@@ -58,12 +58,14 @@ public class Histogram {
       prints out the frequencyTable and calls the createFrequencyFile()
     */
     private void readFromFile() throws IOException {
-        FileReader fileReader;
-        fileReader = new FileReader(file);
+        FileReader fileReader = new FileReader(file);
         prepareFrequencySave(fileReader);
         fileReader.close();
     }
 
+    /*
+      saves each ascii-character from the ambra.txt, as long as there are characters
+     */
     private void prepareFrequencySave(FileReader fileReader) throws IOException {
         while (fileReader.ready()) {
             int asciiValue = fileReader.read();
@@ -79,6 +81,9 @@ public class Histogram {
         }
     }
 
+    /*
+        normalizing: converts lower case letters to upper case by changing ascii-value
+     */
     private void saveAsNewASCII(int asciiValue) {
         if ((asciiValue > 96 && asciiValue < 123) || asciiValue > 64 && asciiValue < 91) {
             if (asciiValue > 96 && asciiValue < 123)
@@ -88,6 +93,8 @@ public class Histogram {
         }
     }
 
+
+    //saves the normalized uppercase characters inte the frequencyTable HashMap
     private void save(char actualCharacter) {
         Character c = actualCharacter;
         // ab hier workaround zum updaten der hashmap
@@ -115,6 +122,12 @@ public class Histogram {
         frequencyOut.close();
     }
 
+    private void printFrequencyTable() {
+        System.out.println(frequencyTable + "\n");
+        String f = getFrequencyList(frequencyTable);
+        System.out.println(f);
+    }
+
     /*
       Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle,
       methods for assignment 2
@@ -135,19 +148,15 @@ public class Histogram {
     private void writeIntToFile() throws IOException {
         int i = 4321;
         FileWriter intOut = new FileWriter("intOutput.txt");
+        // valueOf returns the String of an int
         intOut.write(String.valueOf(i));
         intOut.close();
     }
 
+    //how to create a file
     private void createFile() throws IOException {
         File file = new File("createFile.txt");
         file.createNewFile();
-    }
-
-    private void printFrequencyTable() {
-        System.out.println(frequencyTable + "\n");
-        String f = getFrequencyList(frequencyTable);
-        System.out.println(f);
     }
 
     // a getter method for the HashMap, will be needed for JUnit tests
