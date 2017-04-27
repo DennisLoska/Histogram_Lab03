@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Iterator;
+
 
 public class Histogram {
 	
@@ -36,7 +38,6 @@ public class Histogram {
 		}
 	}
 	
-	// main Methode, erstellt ein Histogramm und führt die read() aus 
 	public static void main(String[] args){
 		Histogram histogram = new Histogram("ambra.txt");
 		histogram.start();
@@ -50,10 +51,6 @@ public class Histogram {
 		createFile();
 	}
 	
-	/* die file wird in den fileReader gegeben,
-	 * jeder char wird eingelesen, wenn der char im ausgewählten bereich ist, 
-	 * dann wird die zahl wieder zum char gemacht -> als actualCharacter der save() übergeben
-	*/
 	private void readFromFile(){
 		FileReader fileReader = null;		// der fileReader muss außerhalb des try/catch blocks initialisiert werden
 			try {							// gab sonst probleme
@@ -79,17 +76,25 @@ public class Histogram {
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-		System.out.println(frequencyTable);
+		System.out.println(frequencyTable + "\n");
+		writeFrequency(frequencyTable);
 	}
 	
-	/* die save() nimmt den actualCharacter und wandelt ihn in ein Character Object des wrappers (notwendig für hashmap)
-	 * der workaround zur hashmap war notwendig, weil es probleme gab beim updaten der key/value pairs der HM
-	 */
 	private void save(char actualCharacter){
+
 		Character c = new Character(actualCharacter);	
 		// ab hier workaround zum updaten der hashmap
 		Integer value = frequencyTable.get(c);
 		frequencyTable.put(actualCharacter, value.intValue()+1); // das normale ++inkrement hat hier nicht funktioniert
+	}
+	
+	private void writeFrequency(HashMap<Character, Integer> frequencyTable){
+		Iterator it = frequencyTable.entrySet().iterator();
+		while(it.hasNext()){
+			HashMap.Entry pair = (HashMap.Entry)it.next();
+			System.out.println(pair.getKey() + " - " + pair.getValue() + "\n");
+			it.remove();
+		}
 	}
 	
 	// Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle, createFile
