@@ -6,9 +6,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringBufferInputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 
+@SuppressWarnings("deprecation")
 public class Histogram {
 
     // fields
@@ -18,10 +20,17 @@ public class Histogram {
     PrintWriter frequencyOut = null;
     FileWriter writeOut = null;
     FileWriter intOut = null;
+    StringBufferInputStream in = null;
 
     // constructor
     public Histogram(String fileName) {
         file = new File(fileName);
+        frequencyTable = new HashMap<Character, Integer>();
+        initTable();
+    }
+
+    // constructor #2, need for unit tests
+    public Histogram() {
         frequencyTable = new HashMap<Character, Integer>();
         initTable();
     }
@@ -68,6 +77,20 @@ public class Histogram {
     public void prepareFrequencySave(FileReader fileReader) throws IOException {
         while (fileReader.ready()) {
             int asciiValue = fileReader.read();
+            if ((asciiValue > 96 && asciiValue < 123) || asciiValue > 64 && asciiValue < 91) {
+                if (asciiValue > 96 && asciiValue < 123) {
+                    asciiValue = asciiValue - 32;
+                }
+                char actualCharacter = (char) asciiValue;
+                save(actualCharacter);
+            }
+        }
+    }
+
+    public void readFromInputStream(String input) {
+        StringBufferInputStream in = new StringBufferInputStream(input);
+        for (int i = 1; i < in.available(); i++) {
+            int asciiValue = in.read();
             if ((asciiValue > 96 && asciiValue < 123) || asciiValue > 64 && asciiValue < 91) {
                 if (asciiValue > 96 && asciiValue < 123) {
                     asciiValue = asciiValue - 32;
@@ -142,3 +165,4 @@ public class Histogram {
         System.out.println(f);
     }
 }
+
