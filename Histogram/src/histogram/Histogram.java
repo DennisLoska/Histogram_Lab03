@@ -44,7 +44,7 @@ public class Histogram {
 	private void start(){
 		readFromFile();
 		writeStringToFile();
-		writeIntToFile();
+		writeIntegerToFile();
 	}
 	
 	/* die file wird in den fileReader gegeben,
@@ -90,6 +90,11 @@ public class Histogram {
 		frequencyTable.put(actualCharacter, value.intValue()+1); // das normale ++inkrement hat hier nicht funktioniert
 	}
 	
+	// Methoden für Aufgabe 2
+	// write a String to a file
+	// write an Integer to a file
+	// write an int to a file
+	
 	private void writeStringToFile(){
 		try { 
 			printOut = new PrintWriter("stringOutput.txt");
@@ -100,10 +105,11 @@ public class Histogram {
 		}		
 	}
 	
-	private void writeIntToFile(){
+	private void writeIntegerToFile(){
 		try {
-			writeOut = new FileWriter("intOutPut.txt");
-			writeOut.write("1234");
+			Integer number = new Integer(1234);
+			writeOut = new FileWriter("intOutput.txt");
+			writeOut.write(number.toString());
 			writeOut.close();
 		} catch (IOException e) {
 			e.printStackTrace();
