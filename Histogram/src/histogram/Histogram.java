@@ -1,4 +1,5 @@
 package histogram;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -10,70 +11,79 @@ import java.util.Iterator;
 
 
 public class Histogram {
-	
+
 	// fields
 	private File file;
-	private HashMap<Character, Integer> frequencyTable;	//die Tabelle der Buchstaben und ihrer Häufigkeit
+	private HashMap<Character, Integer> frequencyTable; // die Tabelle der
+														// Buchstaben und ihrer
+														// Häufigkeit
 	PrintWriter printOut = null;
 	FileWriter writeOut = null;
 	FileWriter intOut = null;
-	
+
 	// constructor
-	public Histogram(String fileName){
+	public Histogram(String fileName) {
 		file = new File(fileName);
 		frequencyTable = new HashMap<Character, Integer>();
 		initTable();
 	}
 
-	//eine getterMethod für die HashMap -> wird später vom Unit Test benötigt
-	public HashMap<Character, Integer> getFrequencyTable(){
+	// eine getterMethod für die HashMap -> wird später vom Unit Test benötigt
+	public HashMap<Character, Integer> getFrequencyTable() {
 		return frequencyTable;
 	}
-	
+
 	// Initialisierung der Häufigkeitstabelle
-	// der Ausdruck "(char) i" liefert den character an der Stelle i der ascii Tabelle
-	private void initTable(){
-		for(int i=65; i<91; i++){
+	// der Ausdruck "(char) i" liefert den character an der Stelle i der ascii
+	// Tabelle
+	private void initTable() {
+		for (int i = 65; i < 91; i++) {
 			frequencyTable.put((char) i, 0);
 		}
 	}
-	
-	public static void main(String[] args){
+
+	// main Methode, erstellt ein Histogramm und führt die read() aus
+	public static void main(String[] args) {
 		Histogram histogram = new Histogram("ambra.txt");
 		histogram.start();
 	}
-	
-	private void start(){
+
+	private void start() {
 		readFromFile();
 		writeStringToFile();
 		writeIntegerToFile();
 		writeIntToFile();
 		createFile();
 	}
-	
-	private void readFromFile(){
-		FileReader fileReader = null;		// der fileReader muss außerhalb des try/catch blocks initialisiert werden
-			try {							// gab sonst probleme
-				fileReader = new FileReader(file);	
-				while(fileReader.ready()){	// 
-					int asciiValue = fileReader.read();
-					if((asciiValue>96 && asciiValue<123) || asciiValue>64 && asciiValue<91){
-						if(asciiValue>96 && asciiValue<123){
-							asciiValue = asciiValue-32;
-						}
-						char actualCharacter = (char)asciiValue;
-						save(actualCharacter);			
+	/*
+	 * die file wird in den fileReader gegeben, jeder char wird eingelesen, wenn
+	 * der char im ausgewählten bereich ist, dann wird die zahl wieder zum char
+	 * gemacht -> als actualCharacter der save() übergeben
+	 */
+	private void readFromFile() {
+		FileReader fileReader = null; // der fileReader muss außerhalb des
+										// try/catch blocks initialisiert werden
+		try { // gab sonst probleme
+			fileReader = new FileReader(file);
+			while (fileReader.ready()) { //
+				int asciiValue = fileReader.read();
+				if ((asciiValue > 96 && asciiValue < 123) || asciiValue > 64 && asciiValue < 91) {
+					if (asciiValue > 96 && asciiValue < 123) {
+						asciiValue = asciiValue - 32;
 					}
+					char actualCharacter = (char) asciiValue;
+					save(actualCharacter);
 				}
-			} catch (IOException e) {
-				if(e instanceof FileNotFoundException){
-					System.out.println("File Not Found.");
-				}
-				e.printStackTrace();
 			}
-		try{
+		} catch (IOException e) {
+			if (e instanceof FileNotFoundException) {
+				System.out.println("File Not Found.");
+			}
+			e.printStackTrace();
+		}
+		try {
 			fileReader.close();
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		System.out.println(frequencyTable + "\n");
@@ -96,19 +106,21 @@ public class Histogram {
 			it.remove();
 		}
 	}
-	
-	// Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle, createFile
-	private void writeStringToFile(){
-		try { 
+
+	// Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle,
+	// createFile
+	private void writeStringToFile() {
+		try {
 			printOut = new PrintWriter("stringOutput.txt");
-			printOut.write("Test"); //starts the OutputStream 
-			printOut.close();		//closes the -     "    - and is necessary to complete the writing process			
+			printOut.write("Test"); // starts the OutputStream
+			printOut.close(); // closes the - " - and is necessary to complete
+								// the writing process
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
-	
-	private void writeIntegerToFile(){
+
+	private void writeIntegerToFile() {
 		try {
 			Integer number = new Integer(1234);
 			writeOut = new FileWriter("IntegerOutput.txt");
@@ -118,8 +130,8 @@ public class Histogram {
 			e.printStackTrace();
 		}
 	}
-	
-	private void writeIntToFile(){
+
+	private void writeIntToFile() {
 		try {
 			int i = 4321;
 			intOut = new FileWriter("intOutput.txt");
@@ -129,8 +141,8 @@ public class Histogram {
 			e.printStackTrace();
 		}
 	}
-	
-	private void createFile(){
+
+	private void createFile() {
 		try {
 			File file = new File("createFile.txt");
 			file.createNewFile();
