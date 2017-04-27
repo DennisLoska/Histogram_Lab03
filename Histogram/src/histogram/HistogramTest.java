@@ -12,7 +12,10 @@ public class HistogramTest {
 		assertEquals(0,v.intValue());
 		assertNull(hist.getFrequencyTable().get('%'));
 	}
-	
+
+    /*
+     Test-case for exercise 4: StringInputStream
+    */
 	@Test
 	public void testCharacterCounting() {
 		String in = "aaaa";
@@ -21,5 +24,12 @@ public class HistogramTest {
 		Integer t = histo.getFrequencyTable().get('A');
 		assertEquals(2, t.intValue());
 	}
+
+
+    @Test
+    public void testCorrectCounting(){
+
+
+    }
 
 }

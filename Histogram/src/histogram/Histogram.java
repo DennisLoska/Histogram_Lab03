@@ -32,7 +32,7 @@ public class Histogram {
 
     // the main method creates a Histogram and runs start()
     public static void main(String[] args) throws IOException {
-        Histogram histogram = new Histogram("ambra.txt");
+        Histogram histogram = new Histogram("Histogram/ambra.txt");
         histogram.start();
     }
 
@@ -51,6 +51,7 @@ public class Histogram {
         createFile();
         printFrequencyTable();
         createFrequencyFile(getFrequencyList(frequencyTable));
+        defineMostFrequentChar(frequencyTable);
     }
 
     /*
@@ -128,6 +129,23 @@ public class Histogram {
         System.out.println(frequencyTable + "\n");
         String f = getFrequencyList(frequencyTable);
         System.out.println(f);
+    }
+
+    /*
+       Exercise 5: which character is the most frequent?
+       //TODO
+     */
+    public void defineMostFrequentChar(HashMap<Character, Integer> frequencyTable){
+        Iterator it = frequencyTable.entrySet().iterator();
+        int maxValue=0;
+        while (it.hasNext()) {
+            HashMap.Entry pair = (HashMap.Entry) it.next();
+            //getFrequencyList(frequencyTable) += (pair.getKey() + " - " + pair.getValue() + "\n");
+            it.remove();
+            if ((int) pair.getValue() > maxValue)
+                maxValue = (int) pair.getValue();
+        }
+        System.out.println("maxValue: " + maxValue);
     }
 
     /*
