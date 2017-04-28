@@ -52,7 +52,6 @@ public class Histogram {
         printFrequencyTable();
         createFrequencyFile(getFrequencyList(frequencyTable));
         defineMostFrequentChar(frequencyTable);
-        readFromInputStream("aaaaaaaaaa");
     }
 
     /*
@@ -71,6 +70,7 @@ public class Histogram {
 		while(testedByte != -1){
 			testedByte = in.read();
 			System.out.println(testedByte);
+			saveAsNewASCII(testedByte);
 		}
     } 
 

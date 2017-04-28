@@ -18,11 +18,11 @@ public class HistogramTest {
     */
 	@Test
 	public void testCharacterCounting() {
-		String in = "aaaa";
+		String in = "aaaaaaaaaa";
 		Histogram histo = new Histogram();
 		histo.readFromInputStream(in);
 		Integer t = histo.getFrequencyTable().get('A');
-		assertEquals(2, t.intValue());
+		assertEquals(10, t.intValue());
 	}
 
 
