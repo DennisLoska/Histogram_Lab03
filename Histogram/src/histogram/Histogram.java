@@ -32,7 +32,7 @@ public class Histogram {
 
     // the main method creates a Histogram and runs start()
     public static void main(String[] args) throws IOException {
-        Histogram histogram = new Histogram("Histogram/ambra.txt");
+        Histogram histogram = new Histogram("ambra.txt");
         histogram.start();
     }
 
@@ -133,7 +133,7 @@ public class Histogram {
 
     /*
        Exercise 5: which character is the most frequent?
-       //TODO
+       //TODO Logik noch nicht ganz richtig
      */
     public void defineMostFrequentChar(HashMap<Character, Integer> frequencyTable){
         Iterator it = frequencyTable.entrySet().iterator();
