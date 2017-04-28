@@ -64,6 +64,16 @@ public class Histogram {
         prepareFrequencySave(fileReader);
         fileReader.close();
     }
+    
+    public void readFromInputStream(String input){
+		StringBufferInputStream in = new StringBufferInputStream(input);
+		int testedByte = 0;
+		while(testedByte != -1){
+			testedByte = in.read();
+			System.out.println(testedByte);
+			saveAsNewASCII(testedByte);
+		}
+    } 
 
     /*
       saves each ascii-character from the ambra.txt, as long as there are characters
@@ -75,13 +85,6 @@ public class Histogram {
         }
     }
 
-    public void readFromInputStream(String input) {
-        StringBufferInputStream in = new StringBufferInputStream(input);
-        for (int i = 1; i < in.available(); i++) {
-            int asciiValue = in.read();
-            saveAsNewASCII(asciiValue);
-        }
-    }
 
     /*
         normalizing: converts lower case letters to upper case by changing ascii-value
@@ -154,7 +157,7 @@ public class Histogram {
             if (maxValue < (int) pair.getValue())
                 maxValue = (int) pair.getValue();
         }
-        System.out.println("maxValue: " + maxValue);
+        System.out.println("maxValue: " + maxValue + "\n");
     }
 
     /*
