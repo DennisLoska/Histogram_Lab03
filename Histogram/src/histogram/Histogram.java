@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.io.StringBufferInputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class Histogram {
@@ -133,16 +134,24 @@ public class Histogram {
 
     /*
        Exercise 5: which character is the most frequent?
-       //TODO Logik noch nicht ganz richtig
+       //TODO Null-value debuggen (frequencyTable size is 0)
      */
-    public void defineMostFrequentChar(HashMap<Character, Integer> frequencyTable){
+    public void defineMostFrequentChar(HashMap<Character, Integer> frequencyTable) {
+        Integer maxValue = frequencyTable.get('A');
+        /*
+        //Andere Implementationsweise mit for-loop
+        for (Map.Entry<Character, Integer> entry : frequencyTable.entrySet()) {
+            Character key = entry.getKey();
+            System.out.println(key.charValue());
+            Integer value = entry.getValue();
+            if (maxValue < value)
+                maxValue = value;
+        }
+        */
         Iterator it = frequencyTable.entrySet().iterator();
-        int maxValue=0;
         while (it.hasNext()) {
             HashMap.Entry pair = (HashMap.Entry) it.next();
-            //getFrequencyList(frequencyTable) += (pair.getKey() + " - " + pair.getValue() + "\n");
-            it.remove();
-            if ((int) pair.getValue() > maxValue)
+            if (maxValue < (int) pair.getValue())
                 maxValue = (int) pair.getValue();
         }
         System.out.println("maxValue: " + maxValue);
