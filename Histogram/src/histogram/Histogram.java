@@ -16,6 +16,10 @@ public class Histogram {
 	private File file;
 	private HashMap<Character, Integer> frequencyTable;
 	private StringBufferInputStream in;
+	int maxValue = 0;
+	int maxWidth = 80;
+	double ratio;
+	boolean widthIsOutrun = false;
 
 	// constructor
 	public Histogram(String fileName) {
@@ -52,14 +56,13 @@ public class Histogram {
 		createFile();
 		printFrequencyTable();
 		createFrequencyFile(getFrequencyList(frequencyTable));
-		System.out.println(getMostFreq(frequencyTable));
-		printDiagram(frequencyTable);
+		System.out.println(getMostFreqString(frequencyTable));
+		//printDiagram(frequencyTable);
+		printChart(frequencyTable);
 	}
 
-	/*
-	 * reads all characters from file that are in a-z prints out the
-	 * frequencyTable and calls the createFrequencyFile()
-	 */
+	 // reads all characters from file that are in a-z prints out the
+	 // frequencyTable and calls the createFrequencyFile()
 	private void readFromFile() throws IOException {
 		FileReader fileReader = new FileReader(file);
 		prepareFrequencySave(fileReader);
@@ -134,9 +137,8 @@ public class Histogram {
 	}
 
 	// returns a String that contains the most freq char + number of occurences
-	public String getMostFreq(HashMap<Character, Integer> frequencyTable) {
+	public String getMostFreqString(HashMap<Character, Integer> frequencyTable) {
 		String ch = "";
-		int maxValue = 0;
 		Iterator it = frequencyTable.entrySet().iterator();
 		while (it.hasNext()) {
 			HashMap.Entry pair = (HashMap.Entry) it.next();
@@ -145,21 +147,66 @@ public class Histogram {
 				ch = pair.getKey().toString();
 			}
 		}
-		return "Most frequent character -> " + ch + " - " + maxValue + " occurences" +"\n";
+		return "Most frequent character -> " + ch + " - " + maxValue + " occurences" + "\n";
 	}
-
-	public void printDiagram(HashMap<Character, Integer> frequencyTable){
-		String diagram  = "";
-		Iterator it = frequencyTable.entrySet().iterator();
-		while(it.hasNext()) {
-			HashMap.Entry pair = (HashMap.Entry) it.next();
-			diagram += pair.getKey().toString() + " : ";
-			for(int i=0; i<=(int) pair.getValue(); i++){
-				diagram += "*";
-			}			
-			diagram += "\n";
+	
+	public void printChart(HashMap<Character, Integer> frequencyTable){
+		if(!widthIsOutrun){
+			printChartWithoutRatio(frequencyTable);
+		} else {
+			printChartWithRatio(frequencyTable);
+		}		
+	}
+	
+	public void printChartWithRatio(HashMap<Character, Integer> frequencyTable){
+		String chart = "";
+		int n = 0;
+		while(maxValue>maxWidth){
+			maxValue = maxValue/2;
+			n++;
 		}
-		System.out.println(diagram);
+		Iterator it = frequencyTable.entrySet().iterator();
+		while(it.hasNext()){
+			HashMap.Entry pair = (HashMap.Entry) it.next();
+			int value = (int) pair.getValue();
+			value = value / 2*n;
+			chart += pair.getKey() + " : ";
+			chart += getStarGraph(value);
+			chart += "\n";
+		}
+		System.out.println(chart);
+	}
+	
+	public void printChartWithoutRatio(HashMap<Character, Integer> frequencyTable){
+		String chart = "";
+		Iterator it = frequencyTable.entrySet().iterator();
+		while(it.hasNext()){
+			HashMap.Entry pair = (HashMap.Entry) it.next();
+			chart += pair.getKey().toString() + " : ";
+			chart += getStarGraph((int) pair.getValue());
+			chart += "\n";
+		}
+		System.out.println(chart);
+	}
+	
+	public boolean widthIsOutrun(HashMap<Character, Integer> frequencyTable){
+		Iterator it = frequencyTable.entrySet().iterator();
+		while (it.hasNext()) {
+			HashMap.Entry pair = (HashMap.Entry) it.next();
+			if((int) pair.getValue()>maxWidth){
+				widthIsOutrun = true;
+			}
+		}
+		return widthIsOutrun;
+	}
+	
+	// returns a string with stars equal to the length
+	private String getStarGraph(int length){
+		String result = "";
+		for(int i = 0; i<length; i++){
+			result += "*";
+		}
+		return result;
 	}
 	
 	// Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle,
