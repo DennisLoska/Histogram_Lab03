@@ -58,7 +58,7 @@ public class Histogram {
 		createFrequencyFile(getFrequencyList(frequencyTable));
 		System.out.println(getMostFreqString(frequencyTable));
 		//printDiagram(frequencyTable);
-		printChart(frequencyTable);
+		printChartWithRatio(frequencyTable);
 	}
 
 	 // reads all characters from file that are in a-z prints out the
