@@ -8,193 +8,178 @@ import java.io.PrintWriter;
 import java.io.StringBufferInputStream;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class Histogram {
 
-    // fields
-    private File file;
-    private HashMap<Character, Integer> frequencyTable;
-    private StringBufferInputStream in;
+	// fields
+	private File file;
+	private HashMap<Character, Integer> frequencyTable;
+	private StringBufferInputStream in;
 
-    // constructor
-    public Histogram(String fileName) {
-        file = new File(fileName);
-        frequencyTable = new HashMap<Character, Integer>();
-        initTable();
-    }
+	// constructor
+	public Histogram(String fileName) {
+		file = new File(fileName);
+		frequencyTable = new HashMap<Character, Integer>();
+		initTable();
+	}
 
-    // constructor #2, needed for unit tests
-    public Histogram() {
-        frequencyTable = new HashMap<Character, Integer>();
-        initTable();
-    }
+	// constructor #2, needed for unit tests
+	public Histogram() {
+		frequencyTable = new HashMap<Character, Integer>();
+		initTable();
+	}
 
-    // the main method creates a Histogram and runs start()
-    public static void main(String[] args) throws IOException {
-        Histogram histogram = new Histogram("ambra.txt");
-        histogram.start();
-    }
+	// the main method creates a Histogram and runs start()
+	public static void main(String[] args) throws IOException {
+		Histogram histogram = new Histogram("ambra.txt");
+		histogram.start();
+	}
 
-    // initialising the frequencyTable with the chars A-Z and value 0 meaning 0 occurances
-    private void initTable() {
-        for (int i = 65; i < 91; i++) {
-            frequencyTable.put((char) i, 0);
-        }
-    }
+	// initialising the frequencyTable with the chars A-Z and value 0 meaning 0
+	// occurances
+	private void initTable() {
+		for (int i = 65; i < 91; i++) {
+			frequencyTable.put((char) i, 0);
+		}
+	}
 
-    private void start() throws IOException {
-        readFromFile();
-        writeStringToFile();
-        writeIntegerToFile();
-        writeIntToFile();
-        createFile();
-        printFrequencyTable();
-        createFrequencyFile(getFrequencyList(frequencyTable));
-        defineMostFrequentChar(frequencyTable);
-    }
+	private void start() throws IOException {
+		readFromFile();
+		writeStringToFile();
+		writeIntegerToFile();
+		writeIntToFile();
+		createFile();
+		printFrequencyTable();
+		createFrequencyFile(getFrequencyList(frequencyTable));
+		System.out.println(getMostFreq(frequencyTable));
+	}
 
-    /*
-      reads all characters from file that are in a-z
-      prints out the frequencyTable and calls the createFrequencyFile()
-    */
-    private void readFromFile() throws IOException {
-        FileReader fileReader = new FileReader(file);
-        prepareFrequencySave(fileReader);
-        fileReader.close();
-    }
-    
-    public void readFromInputStream(String input){
+	/*
+	 * reads all characters from file that are in a-z prints out the
+	 * frequencyTable and calls the createFrequencyFile()
+	 */
+	private void readFromFile() throws IOException {
+		FileReader fileReader = new FileReader(file);
+		prepareFrequencySave(fileReader);
+		fileReader.close();
+	}
+
+	// method for assignment 4
+	public void readFromInputStream(String input) {
 		StringBufferInputStream in = new StringBufferInputStream(input);
 		int testedByte = 0;
-		while(testedByte != -1){
+		while (testedByte != -1) {
 			testedByte = in.read();
 			System.out.println(testedByte);
 			saveAsNewASCII(testedByte);
 		}
-    } 
+	}
 
-    /*
-      saves each ascii-character from the ambra.txt, as long as there are characters
-     */
-    private void prepareFrequencySave(FileReader fileReader) throws IOException {
-        while (fileReader.ready()) {
-            int asciiValue = fileReader.read();
-            saveAsNewASCII(asciiValue);
-        }
-    }
+	// saves each ascii-character from the ambra.txt, as long as there are
+	// characters
+	private void prepareFrequencySave(FileReader fileReader) throws IOException {
+		while (fileReader.ready()) {
+			int asciiValue = fileReader.read();
+			saveAsNewASCII(asciiValue);
+		}
+	}
 
+	// normalizing: converts lower case letters to upper case by changing
+	// ascii-value
+	private void saveAsNewASCII(int asciiValue) {
+		if ((asciiValue > 96 && asciiValue < 123) || asciiValue > 64 && asciiValue < 91) {
+			if (asciiValue > 96 && asciiValue < 123)
+				asciiValue -= 32;
+			char actualCharacter = (char) asciiValue;
+			save(actualCharacter);
+		}
+	}
 
-    /*
-        normalizing: converts lower case letters to upper case by changing ascii-value
-     */
-    private void saveAsNewASCII(int asciiValue) {
-        if ((asciiValue > 96 && asciiValue < 123) || asciiValue > 64 && asciiValue < 91) {
-            if (asciiValue > 96 && asciiValue < 123)
-                asciiValue -= 32;
-            char actualCharacter = (char) asciiValue;
-            save(actualCharacter);
-        }
-    }
+	// saves the normalized uppercase characters inte the frequencyTable HashMap
+	private void save(char actualCharacter) {
+		Character c = actualCharacter;
+		// ab hier workaround zum updaten der hashmap
+		Integer value = frequencyTable.get(c);
+		// counting the amount of used characters in the frequencyTable:
+		frequencyTable.put(actualCharacter, value + 1);
+		// das normale ++inkrement hat hier nicht funktioniert
+	}
 
+	// returns a String that contains the frequencyTable in Character - value
+	// pairs
+	private String getFrequencyList(HashMap<Character, Integer> frequencyTable) {
+		String frequencyList = "";
+		// TODO Erklärung dieser Syntax
+		Iterator it = frequencyTable.entrySet().iterator();
+		while (it.hasNext()) {
+			HashMap.Entry pair = (HashMap.Entry) it.next();
+			frequencyList += (pair.getKey() + " - " + pair.getValue() + "\n");
+			// it.remove();
+		}
+		return frequencyList;
+	}
 
-    //saves the normalized uppercase characters inte the frequencyTable HashMap
-    private void save(char actualCharacter) {
-        Character c = actualCharacter;
-        // ab hier workaround zum updaten der hashmap
-        Integer value = frequencyTable.get(c);
-        // counting the amount of used characters in the frequencyTable:
-        frequencyTable.put(actualCharacter, value + 1);
-        //das normale ++inkrement hat hier nicht funktioniert
-    }
+	// creates a new file that contains the String it is given
+	private void createFrequencyFile(String frequencyList) throws IOException {
+		PrintWriter frequencyOut = new PrintWriter("frequencyOutput.txt");
+		frequencyOut.write(frequencyList);
+		frequencyOut.close();
+	}
 
-    // returns a String that contains the frequencyTable in Character - value pairs
-    private String getFrequencyList(HashMap<Character, Integer> frequencyTable) {
-        String frequencyList = "";
-        //TODO Erklärung dieser Syntax
-        Iterator it = frequencyTable.entrySet().iterator();
-        while (it.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry) it.next();
-            frequencyList += (pair.getKey() + " - " + pair.getValue() + "\n");
-            it.remove();
-        }
-        return frequencyList;
-    }
+	private void printFrequencyTable() {
+		System.out.println(frequencyTable + "\n");
+		String f = getFrequencyList(frequencyTable);
+		System.out.println(f);
+	}
 
-    // creates a new file that contains the String it is given
-    private void createFrequencyFile(String frequencyList) throws IOException {
-        PrintWriter frequencyOut = new PrintWriter("frequencyOutput.txt");
-        frequencyOut.write(frequencyList);
-        frequencyOut.close();
-    }
+	// returns a String that contains the most freq char + number of occurences
+	public String getMostFreq(HashMap<Character, Integer> frequencyTable) {
+		String ch = "";
+		int maxValue = 0;
+		Iterator it = frequencyTable.entrySet().iterator();
+		while (it.hasNext()) {
+			HashMap.Entry pair = (HashMap.Entry) it.next();
+			if (maxValue < (int) pair.getValue()) {
+				maxValue = (int) pair.getValue();
+				ch = pair.getKey().toString();
+			}
+		}
+		return "Most frequent character -> " + ch + " - " + maxValue + " occurences";
+	}
 
-    private void printFrequencyTable() {
-        System.out.println(frequencyTable + "\n");
-        String f = getFrequencyList(frequencyTable);
-        System.out.println(f);
-    }
+	// Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle,
+	// createFile
+	private void writeStringToFile() throws IOException {
+		PrintWriter printOut = new PrintWriter("stringOutput.txt");
+		printOut.write("Test"); // starts the OutputStream
+		printOut.close(); // closes the - " - and is necessary to complete the
+							// writing process
+	}
 
-    /*
-       Exercise 5: which character is the most frequent?
-       //TODO Null-value debuggen (frequencyTable size is 0)
-     */
-    public void defineMostFrequentChar(HashMap<Character, Integer> frequencyTable) {
-        Integer maxValue = frequencyTable.get('A');
-        /*
-        //Andere Implementationsweise mit for-loop
-        for (Map.Entry<Character, Integer> entry : frequencyTable.entrySet()) {
-            Character key = entry.getKey();
-            System.out.println(key.charValue());
-            Integer value = entry.getValue();
-            if (maxValue < value)
-                maxValue = value;
-        }
-        */
-        Iterator it = frequencyTable.entrySet().iterator();
-        while (it.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry) it.next();
-            if (maxValue < (int) pair.getValue())
-                maxValue = (int) pair.getValue();
-        }
-        System.out.println("maxValue: " + maxValue + "\n");
-    }
+	private void writeIntegerToFile() throws IOException {
+		Integer number = 1234;
+		FileWriter writeOut = new FileWriter("IntegerOutput.txt");
+		writeOut.write(number.toString());
+		writeOut.close();
+	}
 
-    /*
-      Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle,
-      methods for assignment 2
-     */
-    private void writeStringToFile() throws IOException {
-        PrintWriter printOut = new PrintWriter("stringOutput.txt");
-        printOut.write("Test"); // starts the OutputStream
-        printOut.close(); // closes the - " - and is necessary to complete the writing process
-    }
+	private void writeIntToFile() throws IOException {
+		int i = 4321;
+		FileWriter intOut = new FileWriter("intOutput.txt");
+		// valueOf returns the String of an int
+		intOut.write(String.valueOf(i));
+		intOut.close();
+	}
 
-    private void writeIntegerToFile() throws IOException {
-        Integer number = 1234;
-        FileWriter writeOut = new FileWriter("IntegerOutput.txt");
-        writeOut.write(number.toString());
-        writeOut.close();
-    }
+	private void createFile() throws IOException {
+		File file = new File("createFile.txt");
+		file.createNewFile();
+	}
 
-    private void writeIntToFile() throws IOException {
-        int i = 4321;
-        FileWriter intOut = new FileWriter("intOutput.txt");
-        // valueOf returns the String of an int
-        intOut.write(String.valueOf(i));
-        intOut.close();
-    }
-
-    //how to create a file
-    private void createFile() throws IOException {
-        File file = new File("createFile.txt");
-        file.createNewFile();
-    }
-
-    // a getter method for the HashMap, will be needed for JUnit tests
-    public HashMap<Character, Integer> getFrequencyTable() {
-        return frequencyTable;
-    }
+	// a getter method for the HashMap, will be needed for JUnit tests
+	public HashMap<Character, Integer> getFrequencyTable() {
+		return frequencyTable;
+	}
 
 }
-
