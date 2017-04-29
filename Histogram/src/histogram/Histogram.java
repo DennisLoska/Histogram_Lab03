@@ -53,6 +53,7 @@ public class Histogram {
 		printFrequencyTable();
 		createFrequencyFile(getFrequencyList(frequencyTable));
 		System.out.println(getMostFreq(frequencyTable));
+		printDiagram(frequencyTable);
 	}
 
 	/*
@@ -115,7 +116,6 @@ public class Histogram {
 		while (it.hasNext()) {
 			HashMap.Entry pair = (HashMap.Entry) it.next();
 			frequencyList += (pair.getKey() + " - " + pair.getValue() + "\n");
-			// it.remove();
 		}
 		return frequencyList;
 	}
@@ -145,9 +145,23 @@ public class Histogram {
 				ch = pair.getKey().toString();
 			}
 		}
-		return "Most frequent character -> " + ch + " - " + maxValue + " occurences";
+		return "Most frequent character -> " + ch + " - " + maxValue + " occurences" +"\n";
 	}
 
+	public void printDiagram(HashMap<Character, Integer> frequencyTable){
+		String diagram  = "";
+		Iterator it = frequencyTable.entrySet().iterator();
+		while(it.hasNext()) {
+			HashMap.Entry pair = (HashMap.Entry) it.next();
+			diagram += pair.getKey().toString() + " : ";
+			for(int i=0; i<=(int) pair.getValue(); i++){
+				diagram += "*";
+			}			
+			diagram += "\n";
+		}
+		System.out.println(diagram);
+	}
+	
 	// Methoden für Aufgabe 2 - StringToFile, IntegerToFile, intToFIle,
 	// createFile
 	private void writeStringToFile() throws IOException {
