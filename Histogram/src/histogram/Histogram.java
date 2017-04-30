@@ -128,7 +128,7 @@ public class Histogram {
 
 	// creates a new file that contains the String it is given
 	private void createFrequencyFile(String frequencyList) throws IOException {
-		PrintWriter frequencyOut = new PrintWriter("frequencyOutput.txt");
+		PrintWriter frequencyOut = new PrintWriter("frequency.txt");
 		frequencyOut.write(frequencyList);
 		frequencyOut.close();
 	}
@@ -236,9 +236,9 @@ public class Histogram {
 		intOut.close();
 	}
 
-	private void createFile() throws IOException {
+	private boolean createFile() throws IOException {
 		File file = new File("createFile.txt");
-		file.createNewFile();
+		return file.createNewFile(); // returns true if the file was created successfully
 	}
 
 	// a getter method for the HashMap, will be needed for JUnit tests
