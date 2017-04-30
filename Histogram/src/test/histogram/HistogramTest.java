@@ -28,7 +28,7 @@ public class HistogramTest {
         Histogram histo = new Histogram();
         histo.readFromInputStream(in);
         Integer t = histo.getFrequencyTable().get('A');
-        assertEquals(2, t.intValue());
+        assertEquals(4, t.intValue());
     }
 
 }
