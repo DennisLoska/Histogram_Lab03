@@ -24,11 +24,15 @@ public class HistogramTest {
 
     @Test
     public void testCharacterCounting() {
-        String in = "aaaa";
+        String in = "aaabac";
         Histogram histo = new Histogram();
         histo.readFromInputStream(in);
-        Integer t = histo.getFrequencyTable().get('A');
-        assertEquals(4, t.intValue());
+        int a = histo.getFrequencyTable().get('A');
+        int b = histo.getFrequencyTable().get('B');
+        int c = histo.getFrequencyTable().get('C');
+        assertEquals(4, a);
+        assertEquals(1, b);
+        assertEquals(1, c);
     }
 
 }
