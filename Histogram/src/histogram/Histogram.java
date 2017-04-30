@@ -121,7 +121,7 @@ public class Histogram {
 		Iterator it = frequencyTable.entrySet().iterator();
 		while (it.hasNext()) {
 			HashMap.Entry pair = (HashMap.Entry) it.next();
-			frequencyList += (pair.getKey() + " - " + pair.getValue() + "\n");
+			frequencyList += (pair.getKey() + " : " + pair.getValue() + "\n");
 		}
 		return frequencyList;
 	}
@@ -150,7 +150,7 @@ public class Histogram {
 				ch = pair.getKey().toString();
 			}
 		}
-		return "Most frequent character -> " + ch + " - " + maxValue + " occurences" + "\n";
+		return "Most frequent character → " + ch + " – " + maxValue + " occurences" + "\n";
 	}
 
 	public void printChart(HashMap<Character, Integer> frequencyTable) {

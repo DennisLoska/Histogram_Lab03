@@ -34,3 +34,4 @@ proguard/
 .gradle/
 build/
 bin/
+/Histogram/eng_news_2015_3M-sentences.txt
