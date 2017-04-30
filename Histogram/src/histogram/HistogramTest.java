@@ -25,6 +25,19 @@ public class HistogramTest {
 		assertEquals(10, t.intValue());
 	}
 
+	/*
+     Test-case for exercise 5: getMostFreqString
+    */
+	@Test
+	public void testMostFreqString(){
+		String in = "qawseeeedrftgzhujikolpqawsedrftgzhujikolkzgdegazu";
+		Histogram histo = new Histogram();
+		histo.readFromInputStream(in);
+		String mostFreqChar = histo.getMostFreqString(histo.getFrequencyTable());
+		String testString = "Most frequent character -> " + "E" + " - " + "6" + " occurences\n";
+		assertTrue(mostFreqChar.equals(testString));
+	}
+
 
     @Test
     public void testCorrectCounting(){
